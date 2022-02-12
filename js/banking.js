@@ -13,6 +13,11 @@ function getInputValue(inpputId){
 
 ///////////////
 
+
+
+
+
+
 function currentBalance(totalFieldId, amount){
    
     const depositeTotal= document.getElementById(totalFieldId);
@@ -26,11 +31,24 @@ function currentBalance(totalFieldId, amount){
 
 ////////////////////////
 
-function updateBalance(amount,isAdd){
 
+function getCurrentBlance(){
     const balanceTotal = document.getElementById('balance-total');
     const balanceTotalText = balanceTotal.innerText;
     const previousbalanceTotalAmount = parseFloat(balanceTotalText);
+
+    return previousbalanceTotalAmount;
+
+}
+function updateBalance(amount,isAdd){
+
+    const balanceTotal = document.getElementById('balance-total');
+
+    // const balanceTotalText = balanceTotal.innerText;
+    // const previousbalanceTotalAmount = parseFloat(balanceTotalText);
+
+
+    const previousbalanceTotalAmount =getCurrentBlance();
    if(isAdd == true){
     balanceTotal.innerText = previousbalanceTotalAmount + amount;
     
@@ -47,10 +65,12 @@ document.getElementById('deposit-button').addEventListener('click', function (){
 //new depsite 
 
 const depsiteAmount = getInputValue('deposit-input');
+if(depsiteAmount > 0){
+    currentBalance('deposit-total',depsiteAmount);
 
-currentBalance('deposit-total',depsiteAmount);
+    updateBalance(depsiteAmount, true)
+}
 
-updateBalance(depsiteAmount, true)
 
   //get current deposit
 
@@ -83,11 +103,19 @@ document.getElementById('withdraw-button').addEventListener('click', function ()
    
   const withdrawAmount = getInputValue('withdraw-input');
 
-  currentBalance('withdraw-total',withdrawAmount);
+  const currentBalanceIs = getCurrentBlance();
+  if(withdrawAmount > 0 && withdrawAmount < currentBalanceIs){
 
-  updateBalance(withdrawAmount,false)
+    currentBalance('withdraw-total',withdrawAmount);
 
+    updateBalance(withdrawAmount,false)
+  }
   
+  if(withdrawAmount > currentBalanceIs){
+    alert('You can not widthdraw more than waht you have in your account');
+}
+
+
 //get update  withdraw balance
 
 /*
